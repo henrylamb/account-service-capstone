@@ -34,9 +34,9 @@ public class UserController {
     
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable("id") long id) {
-        if (user.getId()!=id || user.getName()!=null || user.getPassword()!=null ||
-        user.getAddress()!=null || user.getPhone()!=null || user.getResume()!=null ||
-        user.getDepartment()!=null || user.getRole()!=null) {
+        if (user.getId()!=id || user.getName()==null || user.getPassword()==null ||
+        user.getAddress()==null || user.getPhone()==null || user.getResume()==null ||
+        user.getDepartment()==null || user.getRole()==null) {
             return ResponseEntity.badRequest().build();
         }
         repo.save(user);
