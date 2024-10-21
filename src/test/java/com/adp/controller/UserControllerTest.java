@@ -35,10 +35,12 @@ public class UserControllerTest {
     @Test
   public void testGetAll() throws Exception {
     // Arrange
-    User user1 = new User("Augusto Pummell", "rM1+4=er", "apummell0@gmpg.org", "Suite 90", "692 743 4843", "Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.", "Services", "Surveyor", 1);
+    User user1 = new User();
     user1.setId(1L);
-    User user2 = new User("Harry Potter", "rM1+4=er", "apummell0@gmpg.org", "Suite 90", "692 743 4843", "Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.", "Services", "Surveyor", 1);
+    user1.setName("Augusto Pummell");
+    User user2 = new User();
     user2.setId(2L);
+    user2.setName("Harry Potter");
 
     // Assign
     when(userService.getAll())
@@ -53,7 +55,7 @@ public class UserControllerTest {
   @Test
   public void testGetUserById() throws Exception {
     // Arrange
-    User user = new User("Augusto Pummell", "rM1+4=er", "apummell0@gmpg.org", "Suite 90", "692 743 4843", "Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.", "Services", "Surveyor", 1);
+    User user = new User();
     user.setId(1L);
     user.setName("John Doe");
 
@@ -70,8 +72,9 @@ public class UserControllerTest {
   @Test
   public void testDeleteUser() throws Exception {
 
-    User existingUser = new User("Augusto Pummell", "rM1+4=er", "apummell0@gmpg.org", "Suite 90", "692 743 4843", "Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.", "Services", "Surveyor", 1);
+    User existingUser = new User();
     existingUser.setId(1L);
+    existingUser.setName("John Doe");
     when(userService.getUser(1L)).thenReturn(Optional.of(existingUser));
 
     mockMvc.perform(delete("/users/1")).andExpect(status().isNoContent());
