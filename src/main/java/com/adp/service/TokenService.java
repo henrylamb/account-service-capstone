@@ -26,7 +26,9 @@ public class TokenService {
 
   public Token generateToken(User user){
     String username = user.getName();
-    return new Token(JWTHelper.createToken(username, publicKey, privateKey));
+    long userId = user.getId();
+    String role = user.getRole();
+    return new Token(JWTHelper.createToken(username, userId, role, publicKey, privateKey));
   }
   
   public boolean validateUser(User user) {

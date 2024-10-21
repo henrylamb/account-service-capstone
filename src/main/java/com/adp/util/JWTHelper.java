@@ -14,7 +14,7 @@ import java.security.interfaces.RSAPublicKey;
 
 public class JWTHelper {
 
-  public static String createToken(String name, RSAPublicKey rsaPublicKey, RSAPrivateKey rsaPrivateKey) {
+  public static String createToken(String name, long userId, String role,  RSAPublicKey rsaPublicKey, RSAPrivateKey rsaPrivateKey) {
     
     try {
       Algorithm algorithm = Algorithm.RSA256(rsaPublicKey, rsaPrivateKey);
@@ -22,6 +22,8 @@ public class JWTHelper {
 
       String token = JWT.create()
           .withSubject(name)
+          .withClaim("userId", userId)
+          .withClaim("role", role)
           .withIssuer("issuer")
           .withIssuedAt(now)
           .withExpiresAt(now.plus(1, ChronoUnit.HOURS)) // 1 hour expiration
