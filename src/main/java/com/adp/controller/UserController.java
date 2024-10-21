@@ -30,6 +30,11 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable("id") long id) {
           return userService.getUser(id);
     }  
+
+    @GetMapping("/admin/{id}")
+    public Optional<User> getUserByIdByAdmin(@PathVariable("id") long id) {
+          return userService.getUser(id);
+    } 
     
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable("id") long id) {
@@ -43,6 +48,18 @@ public class UserController {
         
     } 
 
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<?> updateUserByAdmin(@RequestBody User user, @PathVariable("id") long id) {
+
+        Optional<User> optionalUser = userService.getUser(id);
+        if (optionalUser.isEmpty() || user.getId() != id || !isUserValid(user)) {
+            return ResponseEntity.badRequest().body("Bad Request");
+        }
+        userService.saveUser(user);
+        return ResponseEntity.ok(user);
+        
+    }
+
     private boolean isUserValid(User user) {
         return user.getName() != null && user.getEmail() != null && user.getPassword() != null;
       //  && user.getAddress()!=null && user.getPhone()!=null && user.getResume()!=null
@@ -51,6 +68,18 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id){
+        Optional<User> user = userService.getUser(id);
+        if (user.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        userService.delete(user.get());;
+        return ResponseEntity.noContent().build();
+
+
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<?> deleteUserByAdmin(@PathVariable("id") long id){
         Optional<User> user = userService.getUser(id);
         if (user.isEmpty()){
             return ResponseEntity.badRequest().build();
