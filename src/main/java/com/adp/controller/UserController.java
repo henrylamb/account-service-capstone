@@ -36,7 +36,7 @@ public class UserController {
 
         Optional<User> optionalUser = userService.getUser(id);
         if (optionalUser.isEmpty() || user.getId() != id || !isUserValid(user)) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Bad Request");
         }
         userService.saveUser(user);
         return ResponseEntity.ok(user);
@@ -44,7 +44,7 @@ public class UserController {
     } 
 
     private boolean isUserValid(User user) {
-        return user.getName() != null ;//&& user.getEmail() != null && user.getPassword() != null
+        return user.getName() != null && user.getEmail() != null && user.getPassword() != null;
       //  && user.getAddress()!=null && user.getPhone()!=null && user.getResume()!=null
        // &&  user.getDepartment()!=null && user.getRole()!=null;
       }
