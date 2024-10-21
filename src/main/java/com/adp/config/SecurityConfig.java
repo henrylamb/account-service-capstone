@@ -18,7 +18,7 @@ public class SecurityConfig {
             .requestMatchers("/").permitAll()
             .requestMatchers("/registration").permitAll()
             .requestMatchers("/login").permitAll()
-            .requestMatchers("/users/manager").permitAll()
+            .requestMatchers("/users/manager/{id}").permitAll()
             .anyRequest().authenticated())
             .build();
   }
