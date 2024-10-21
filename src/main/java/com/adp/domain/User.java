@@ -33,19 +33,6 @@ public class User {
 
 	private long admin_id;
 
-	public User( String name, String password, String email, String address, String phone, String resume,
-			String department, String role, long admin_id) {
-		this.name = name;
-		this.password = password;
-		this.email = email;
-		this.address = address;
-		this.phone = phone;
-		this.resume = resume;
-		this.department = department;
-		this.role = role;
-		this.admin_id = admin_id;
-	}
-
 	public String getAddress() {
 		return address;
 	}

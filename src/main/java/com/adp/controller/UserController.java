@@ -33,15 +33,21 @@ public class UserController {
     
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable("id") long id) {
-        if (user.getId()!=id || user.getName()==null || user.getPassword()==null ||
-        user.getAddress()==null || user.getPhone()==null || user.getResume()==null ||
-        user.getDepartment()==null || user.getRole()==null) {
+
+        Optional<User> optionalUser = userService.getUser(id);
+        if (optionalUser.isEmpty() || user.getId() != id || !isUserValid(user)) {
             return ResponseEntity.badRequest().build();
         }
         userService.saveUser(user);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(user);
         
     } 
+
+    private boolean isUserValid(User user) {
+        return user.getName() != null ;//&& user.getEmail() != null && user.getPassword() != null
+      //  && user.getAddress()!=null && user.getPhone()!=null && user.getResume()!=null
+       // &&  user.getDepartment()!=null && user.getRole()!=null;
+      }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id){
