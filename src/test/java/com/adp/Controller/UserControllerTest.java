@@ -1,4 +1,4 @@
-package com.adp.Controller;
+package com.adp.controller;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.adp.controller.UserController;
+import com.adp.service.UserService;
 
 
 @WebMvcTest(controllers = UserController.class)
@@ -18,6 +19,7 @@ import com.adp.controller.UserController;
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean UserController repo;
+    @MockBean
+    private UserService userService;
     
 }
