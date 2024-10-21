@@ -13,16 +13,15 @@ public class RegisterService{
 
   @Autowired
   UserRepository userRepository;
-
   public boolean saveCustomer(User user) {
-    if(user.getName() != null && user.getEmail() != null && user.getPassword() != null && isNameFree(user.getEmail())){
+    if(user.getName() != null && user.getEmail() != null && user.getPassword() != null && isEmailFree(user.getEmail())){
       user = userRepository.save(user);
       return user != null;
     }
     return false;
   }
 
-  private boolean isNameFree(String email) {
+  private boolean isEmailFree(String email) {
     Optional<User> user = userRepository.findByEmail(email);
     return user.isEmpty();
   }
