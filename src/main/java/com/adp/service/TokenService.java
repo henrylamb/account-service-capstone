@@ -33,13 +33,14 @@ public class TokenService {
   
   public boolean validateUser(User user) {
     if (user.getName() != null && user.getPassword() != null) {
-      Optional<User> optUser = getUser(user.getName());
-      return (optUser.isPresent() && optUser.get().getPassword().equals(user.getPassword()));
+      Optional<User> optUser = getUser(user.getEmail());
+      return (optUser.isPresent() && optUser.get().getPassword().equals(user.getPassword())
+      && optUser.get().getEmail().equals(user.getEmail()));
     }
     return false;
   }
 
   private Optional<User> getUser(String name) {
-    return userRepository.findByName(name);
+    return userRepository.findByEmail(name);
   }
 }

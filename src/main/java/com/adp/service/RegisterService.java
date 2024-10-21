@@ -15,15 +15,15 @@ public class RegisterService{
   UserRepository userRepository;
 
   public boolean saveCustomer(User user) {
-    if(user.getName() != null && user.getEmail() != null && user.getPassword() != null && isNameFree(user.getName())){
+    if(user.getName() != null && user.getEmail() != null && user.getPassword() != null && isNameFree(user.getEmail())){
       user = userRepository.save(user);
       return user != null;
     }
     return false;
   }
 
-  private boolean isNameFree(String name) {
-    Optional<User> user = userRepository.findByName(name);
+  private boolean isNameFree(String email) {
+    Optional<User> user = userRepository.findByEmail(email);
     return user.isEmpty();
   }
 
