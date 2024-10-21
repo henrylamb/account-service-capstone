@@ -20,7 +20,9 @@ public class LoginController {
   @PostMapping
   public ResponseEntity<?> getToken(@RequestBody User user){
     boolean isValid = tokenService.validateUser(user);
+    System.out.println("post login");
     if (isValid) {
+      System.out.print("user is valid");
       Token token = tokenService.generateToken(user);
       return ResponseEntity.ok(token);
     } else {
