@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,13 +85,13 @@ public class UserController {
         if (user.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
-        userService.delete(user.get());;
+        userService.delete(user.get());
         return ResponseEntity.noContent().build();
-
 
     }
 
-      @GetMapping("/manager/{id}")
+    
+    @GetMapping("/managers/{id}")
     public ResponseEntity<?> getManagerById(@PathVariable("id") long id){
         Optional<User> optionalUser = userService.getUser(id);
 
@@ -105,6 +106,5 @@ public class UserController {
         }
         return ResponseEntity.ok(user);
     } 
-
 
 }
