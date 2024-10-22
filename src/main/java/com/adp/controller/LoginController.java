@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 
 import com.adp.domain.User;
 import com.adp.dto.Token;
@@ -22,16 +20,11 @@ public class LoginController {
   TokenService tokenService;
 
   @PostMapping
-  public ResponseEntity<?> getToken(@RequestBody User user, HttpServletResponse response){
+  public ResponseEntity<?> getToken(@RequestBody User user){
     boolean isValid = tokenService.validateUser(user);
     if (isValid) {
       Token token = tokenService.generateToken(user);
-      System.out.println(token);
-      Cookie cookie = new Cookie("user", token.getToken());
-      cookie.setHttpOnly(true);
-      cookie.setPath("/");
-      response.addCookie(cookie);
-      return ResponseEntity.ok().build();
+      return ResponseEntity.ok(token);
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

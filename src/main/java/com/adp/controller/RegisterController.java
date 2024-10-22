@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 
 import com.adp.domain.User;
 import com.adp.dto.Token;
@@ -26,15 +24,12 @@ public class RegisterController {
   @Autowired TokenService tokenService;
 
   @PostMapping
-  public ResponseEntity<?> userRegistration(@RequestBody User user, HttpServletResponse response){
-    if(registerService.saveCustomer(user)){
+  public ResponseEntity<?> userRegistration(@RequestBody User user){
+    if(registerService.saveCandidate(user)){
       Token token = tokenService.generateToken(user);
-      Cookie cookie = new Cookie("user", token.getToken());
-      cookie.setHttpOnly(true);
-      cookie.setPath("/");
-      response.addCookie(cookie);
+    
       
-      return ResponseEntity.ok().build();
+      return ResponseEntity.ok(token);
 
     }
     return ResponseEntity.badRequest().build();
@@ -43,7 +38,7 @@ public class RegisterController {
   
   @PostMapping("/admin")
   public ResponseEntity<?> userRegistrationByAdmin(@RequestBody User user){
-    if(registerService.saveCustomer(user)){
+    if(registerService.saveManager(user)){
       Token token = tokenService.generateToken(user);
       return ResponseEntity.ok(token);
     }
