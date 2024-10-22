@@ -27,10 +27,7 @@ public class RegisterController {
   public ResponseEntity<?> userRegistration(@RequestBody User user){
     if(registerService.saveCandidate(user)){
       Token token = tokenService.generateToken(user);
-    
-      
       return ResponseEntity.ok(token);
-
     }
     return ResponseEntity.badRequest().build();
   }
@@ -42,7 +39,7 @@ public class RegisterController {
       Token token = tokenService.generateToken(user);
       return ResponseEntity.ok(token);
     }
-    return ResponseEntity.badRequest().body("Register fail");
+    return ResponseEntity.badRequest().build();
   }
 
 }

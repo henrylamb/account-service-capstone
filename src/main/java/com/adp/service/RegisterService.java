@@ -15,7 +15,7 @@ public class RegisterService{
   UserRepository userRepository;
   public boolean saveCandidate(User user) {
     if(user.getName() != null && user.getEmail() != null && user.getPassword() != null && isEmailFree(user.getEmail())){
-      user.setRole("CANDIDATE");
+      user.setRole("ROLE_CANDIDATE");
       user = userRepository.save(user);
       return user != null;
     }
@@ -24,7 +24,7 @@ public class RegisterService{
 
   public boolean saveManager(User user) {
     if(user.getName() != null && user.getEmail() != null && user.getPassword() != null && isEmailFree(user.getEmail())){
-      user.setRole("MANAGER");
+      user.setRole("ROLE_MANAGER");
       user = userRepository.save(user);
       return user != null;
     }
