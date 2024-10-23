@@ -36,12 +36,8 @@ public class UserController {
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable("id") long id) {
 
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        //Dunno why but the principal is getting set as a jwt.
-//        Jwt jwt = (Jwt) authentication.getPrincipal();
         Long userId = JWTHelper.getUserIdFromAuthContext();
 
-//        System.out.println(userId);
         User user = userService.getUser(userId).get();
 
         if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
@@ -112,8 +108,7 @@ public class UserController {
 
     }
 
-    
-    @GetMapping("/managers/{id}")
+      @GetMapping("/manager/{id}")
     public ResponseEntity<?> getManagerById(@PathVariable("id") long id){
         Optional<User> optionalUser = userService.getUser(id);
 
@@ -123,10 +118,11 @@ public class UserController {
         User user = optionalUser.get();
 
         //check role
-        if (!"manager".equalsIgnoreCase(user.getRole())){
+        if (!"ROLE_MANAGER".equalsIgnoreCase(user.getRole())){
             return ResponseEntity.badRequest().body("User not a manager");
         }
         return ResponseEntity.ok(user);
     } 
+
 
 }
