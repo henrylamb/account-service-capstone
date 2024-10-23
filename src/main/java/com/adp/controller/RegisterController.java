@@ -34,6 +34,7 @@ public class RegisterController {
     return ResponseEntity.badRequest().build();
   }
 
+  //accessible by admins to create managers
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/admin")
   public ResponseEntity<?> userRegistrationByAdmin(@RequestBody User user){

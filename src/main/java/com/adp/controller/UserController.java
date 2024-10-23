@@ -2,6 +2,8 @@ package com.adp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +30,21 @@ public class UserController {
 
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable("id") long id) {
-          return userService.getUser(id);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+          //Extract the userId from the principal
+          String userId = String.valueOf(authentication.getPrincipal());
+        System.out.println(userId);
+         /* User user = userService.getUser(userId).get();
+
+          if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
+            return userService.getUser(id);
+          }   
+          
+          else if ("ROLE_MANAGER".equals(user.getRole())) {
+            return userService.getUser(id);
+          }*/
+          return null;
     }  
 
     @GetMapping("/admin/{id}")
