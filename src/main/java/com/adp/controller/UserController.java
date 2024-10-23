@@ -1,7 +1,12 @@
 package com.adp.controller;
 
+import com.adp.util.JWTHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
@@ -27,9 +32,22 @@ public class UserController {
         return userService.getAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable("id") long id) {
-          return userService.getUser(id);
+
+        Long userId = JWTHelper.getUserIdFromAuthContext();
+
+        User user = userService.getUser(userId).get();
+
+        if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
+            return userService.getUser(id);
+        }
+
+        else if ("ROLE_MANAGER".equals(user.getRole())) {
+            return userService.getUser(id);
+        }
+        return null;
     }  
 
     @GetMapping("/admin/{id}")
@@ -90,7 +108,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/manager/{id}")
+      @GetMapping("/manager/{id}")
     public ResponseEntity<?> getManagerById(@PathVariable("id") long id){
         Optional<User> optionalUser = userService.getUser(id);
 
@@ -105,6 +123,6 @@ public class UserController {
         }
         return ResponseEntity.ok(user);
     } 
-    
+
 
 }
