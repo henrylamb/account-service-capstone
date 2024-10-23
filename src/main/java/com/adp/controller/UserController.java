@@ -45,7 +45,7 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }  
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/{id}")
     public Iterable<User> getUserByIdByAdmin(@PathVariable("id") long id) {
           return userService.getAll();
@@ -68,7 +68,7 @@ public class UserController {
         
     } 
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateUserByAdmin(@RequestBody User user, @PathVariable("id") long id) {
 
@@ -109,7 +109,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> deleteUserByAdmin(@PathVariable("id") long id){
         Optional<User> user = userService.getUser(id);

@@ -59,7 +59,7 @@ public class JWTHelper {
       converter.setJwtGrantedAuthoritiesConverter((jwt) -> {
           // Extract role claim from JWT and map to Spring Security authority
           String role = jwt.getClaimAsString("role");
-          return Collections.singletonList(new SimpleGrantedAuthority(role.toUpperCase()));
+          return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
       });
       converter.setPrincipalClaimName("userId");
       return converter;

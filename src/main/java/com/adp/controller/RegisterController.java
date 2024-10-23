@@ -35,7 +35,7 @@ public class RegisterController {
   }
 
   //accessible by admins to create managers
-  @PreAuthorize("hasRole('admin')")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("/admin")
   public ResponseEntity<?> userRegistrationByAdmin(@RequestBody User user){
     if(registerService.saveManager(user)){
