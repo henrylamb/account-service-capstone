@@ -90,8 +90,21 @@ public class UserController {
 
     }
 
-    }
+      @GetMapping("/managers/{id}")
+    public ResponseEntity<?> getManagerById(@PathVariable("id") long id){
+        Optional<User> optionalUser = userService.getUser(id);
 
-    
+        if (optionalUser.isEmpty()){
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User user = optionalUser.get();
+
+        //check role
+        if (!"manager".equalsIgnoreCase(user.getRole())){
+            return ResponseEntity.badRequest().body("User not a manager");
+        }
+        return ResponseEntity.ok(user);
+    } 
 
 
+}
