@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.adp.util.JWTHelper;
 
@@ -23,7 +26,7 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .cors(cors -> cors.disable())
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/").permitAll()
@@ -31,11 +34,20 @@ public class SecurityConfig {
             .requestMatchers("/login").permitAll()
             .requestMatchers("/users/manager/{id}").permitAll()
             .anyRequest().authenticated())
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
-                            .decoder(JWTHelper.jwtDecoder(publicKey)) // Use NimbusJwtDecoder with public key
-                            .jwtAuthenticationConverter(JWTHelper.jwtAuthenticationConverter()))) // Extract roles
-
-            .build();
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
+            .decoder(JWTHelper.jwtDecoder(publicKey))
+            .jwtAuthenticationConverter(JWTHelper.jwtAuthenticationConverter())))
+        .build();
   }
 
+  @Bean
+  public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.addAllowedOrigin("*"); // Allow all origins
+    configuration.addAllowedMethod("*"); // Allow all methods (GET, POST, etc.)
+    configuration.addAllowedHeader("*"); // Allow all headers
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
 }
