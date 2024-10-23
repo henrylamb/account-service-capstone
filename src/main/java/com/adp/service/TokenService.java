@@ -25,6 +25,7 @@ public class TokenService {
   @Value("${rsa.public-key}") RSAPublicKey publicKey;
 
   public Token generateToken(User user){
+    user = userRepository.findByEmail(user.getEmail()).get();
     String username = user.getName();
     long userId = user.getId();
     String role = user.getRole();
