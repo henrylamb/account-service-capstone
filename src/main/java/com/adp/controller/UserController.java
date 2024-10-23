@@ -27,53 +27,56 @@ public class UserController {
     
     @Autowired UserService userService;
 
-    @GetMapping
-    public Iterable<User> getAll() {
-        return userService.getAll();
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
+    
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") long id) {
+    public ResponseEntity<?> getUserById(@PathVariable("id") long id) {
 
         Long userId = JWTHelper.getUserIdFromAuthContext();
 
         User user = userService.getUser(userId).get();
 
         if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
-            return userService.getUser(id);
+            return ResponseEntity.ok(userService.getUser(id));
         }
 
         else if ("ROLE_MANAGER".equals(user.getRole())) {
-            return userService.getUser(id);
+            return ResponseEntity.ok(userService.getUser(id));
         }
-        return null;
+        return ResponseEntity.badRequest().build();
     }  
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/{id}")
-    public Optional<User> getUserByIdByAdmin(@PathVariable("id") long id) {
-          return userService.getUser(id);
+    public Iterable<User> getUserByIdByAdmin(@PathVariable("id") long id) {
+          return userService.getAll();
     } 
     
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable("id") long id) {
 
+        Long userId = JWTHelper.getUserIdFromAuthContext();
+        User user_token = userService.getUser(userId).get();
+
         Optional<User> optionalUser = userService.getUser(id);
-        if (optionalUser.isEmpty() || user.getId() != id || !isUserValid(user)) {
+        if (optionalUser.isEmpty() || user_token.getId() != id || !isUserValid(user)) {
             return ResponseEntity.badRequest().body("Bad Request");
         }
+
+        user.setId(user_token.getId());
         userService.saveUser(user);
         return ResponseEntity.ok(user);
         
     } 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateUserByAdmin(@RequestBody User user, @PathVariable("id") long id) {
 
         Optional<User> optionalUser = userService.getUser(id);
-        if (optionalUser.isEmpty() || user.getId() != id || !isUserValid(user)) {
+        if (optionalUser.isEmpty() || !isUserValid(user)) {
             return ResponseEntity.badRequest().body("Bad Request");
         }
+        user.setId(id);
         userService.saveUser(user);
         return ResponseEntity.ok(user);
         
@@ -87,6 +90,14 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id){
+
+        Long userId = JWTHelper.getUserIdFromAuthContext();
+        User user_token = userService.getUser(userId).get();
+
+        if(id != (user_token.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+        
         Optional<User> user = userService.getUser(id);
         if (user.isEmpty()){
             return ResponseEntity.badRequest().build();
@@ -97,6 +108,8 @@ public class UserController {
 
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> deleteUserByAdmin(@PathVariable("id") long id){
         Optional<User> user = userService.getUser(id);
