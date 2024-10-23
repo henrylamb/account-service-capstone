@@ -73,9 +73,10 @@ public class UserController {
     public ResponseEntity<?> updateUserByAdmin(@RequestBody User user, @PathVariable("id") long id) {
 
         Optional<User> optionalUser = userService.getUser(id);
-        if (optionalUser.isEmpty() || user.getId() != id || !isUserValid(user)) {
+        if (optionalUser.isEmpty() || !isUserValid(user)) {
             return ResponseEntity.badRequest().body("Bad Request");
         }
+        user.setId(id);
         userService.saveUser(user);
         return ResponseEntity.ok(user);
         
