@@ -53,5 +53,4 @@ public class RegisterController {
     return ResponseEntity.badRequest().body("Register fail");
   }
 
-
 }
