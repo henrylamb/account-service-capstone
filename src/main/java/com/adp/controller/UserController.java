@@ -90,7 +90,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/managers/{id}")
+    @GetMapping("/manager/{id}")
     public ResponseEntity<?> getManagerById(@PathVariable("id") long id){
         Optional<User> optionalUser = userService.getUser(id);
 
@@ -100,7 +100,7 @@ public class UserController {
         User user = optionalUser.get();
 
         //check role
-        if (!"manager".equalsIgnoreCase(user.getRole())){
+        if (!"ROLE_MANAGER".equalsIgnoreCase(user.getRole())){
             return ResponseEntity.badRequest().body("User not a manager");
         }
         return ResponseEntity.ok(user);
