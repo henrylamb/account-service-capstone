@@ -44,13 +44,5 @@ public class RegisterController {
     return ResponseEntity.badRequest().build();
   }
 
-  @PostMapping("/managers")
-  public ResponseEntity<?> userManagerRegistrationByAdmin(@RequestBody User user){
-    if(registerService.saveCustomer(user)){
-      Token token = tokenService.generateToken(user);
-      return ResponseEntity.ok(token);
-    }
-    return ResponseEntity.badRequest().body("Register fail");
-  }
 
 }
