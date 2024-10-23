@@ -90,7 +90,7 @@ public class UserController {
 
     }
 
-      @GetMapping("/managers/{id}")
+      @GetMapping("/manager/{id}")
     public ResponseEntity<?> getManagerById(@PathVariable("id") long id){
         Optional<User> optionalUser = userService.getUser(id);
 
