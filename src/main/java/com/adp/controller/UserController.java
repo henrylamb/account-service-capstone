@@ -90,6 +90,14 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id){
+
+        Long userId = JWTHelper.getUserIdFromAuthContext();
+        User user_token = userService.getUser(userId).get();
+
+        if(id != (user_token.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+        
         Optional<User> user = userService.getUser(id);
         if (user.isEmpty()){
             return ResponseEntity.badRequest().build();
