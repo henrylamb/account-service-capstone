@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
@@ -35,19 +36,21 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable("id") long id) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-          //Extract the userId from the principal
-          String userId = String.valueOf(authentication.getPrincipal());
-        System.out.println(userId);
-         /* User user = userService.getUser(userId).get();
+        //Dunno why but the principal is getting set as a jwt.
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        Long userId = (Long)jwt.getClaims().get("userId");
 
-          if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
+        System.out.println(userId);
+        User user = userService.getUser(userId).get();
+
+        if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
             return userService.getUser(id);
-          }   
-          
-          else if ("ROLE_MANAGER".equals(user.getRole())) {
+        }
+
+        else if ("ROLE_MANAGER".equals(user.getRole())) {
             return userService.getUser(id);
-          }*/
-          return null;
+        }
+        return null;
     }  
 
     @GetMapping("/admin/{id}")
