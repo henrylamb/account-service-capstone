@@ -3,6 +3,8 @@ package com.adp.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 //BE CAREFUL WHICH JWT IMPORT YOU USE - THERE ARE 2 DIFFERENT ONES
 import java.time.Instant;
@@ -61,7 +63,13 @@ public class JWTHelper {
       });
       converter.setPrincipalClaimName("userId");
       return converter;
+  }
 
+  public static Long getUserIdFromAuthContext(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //Dunno why but the principal is getting set as a jwt.
+    Jwt jwt = (Jwt) authentication.getPrincipal();
+    return (Long)jwt.getClaims().get("userId");
   }
 
 }

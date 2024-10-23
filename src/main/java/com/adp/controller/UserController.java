@@ -1,5 +1,6 @@
 package com.adp.controller;
 
+import com.adp.util.JWTHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,12 +36,12 @@ public class UserController {
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable("id") long id) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Dunno why but the principal is getting set as a jwt.
-        Jwt jwt = (Jwt) authentication.getPrincipal();
-        Long userId = (Long)jwt.getClaims().get("userId");
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        //Dunno why but the principal is getting set as a jwt.
+//        Jwt jwt = (Jwt) authentication.getPrincipal();
+        Long userId = JWTHelper.getUserIdFromAuthContext();
 
-        System.out.println(userId);
+//        System.out.println(userId);
         User user = userService.getUser(userId).get();
 
         if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
