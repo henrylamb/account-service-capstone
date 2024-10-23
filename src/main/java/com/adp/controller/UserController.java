@@ -130,10 +130,6 @@ public class UserController {
         }
         User user = optionalUser.get();
 
-        //check role
-        if (!"hiring-manager".equalsIgnoreCase(user.getRole())){
-            return ResponseEntity.badRequest().body("User not a manager");
-        }
         return ResponseEntity.ok(user);
     } 
 

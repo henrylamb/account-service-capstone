@@ -15,7 +15,7 @@ public class User {
 	private long id;
 	
 	@Column(name="FULL_NAME")
-	private String name;
+	private String fullName;
 	
 	private String password;
 	
@@ -90,11 +90,11 @@ public class User {
 	}
 
 	public String getName() {
-		return name;
+		return fullName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public String getPassword() {
