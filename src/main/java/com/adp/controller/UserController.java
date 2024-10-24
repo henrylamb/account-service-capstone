@@ -35,17 +35,21 @@ public class UserController {
 
         User user = userService.getUser(userId).get();
 
-        if("ROLE_CANDIDATE".equals(user.getRole()) && userId == id){
+        if("applicant".equals(user.getRole()) && userId == id){
             return ResponseEntity.ok(userService.getUser(id));
         }
 
-        else if ("ROLE_MANAGER".equals(user.getRole())) {
+        else if ("hiring-manager".equals(user.getRole())) {
+            return ResponseEntity.ok(userService.getUser(id));
+        }
+
+        else if ("admin".equals(user.getRole())) {
             return ResponseEntity.ok(userService.getUser(id));
         }
         return ResponseEntity.badRequest().build();
     }  
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/{id}")
     public Iterable<User> getUserByIdByAdmin(@PathVariable("id") long id) {
           return userService.getAll();
@@ -68,7 +72,7 @@ public class UserController {
         
     } 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/admin/{id}")
     public ResponseEntity<?> updateUserByAdmin(@RequestBody User user, @PathVariable("id") long id) {
 
@@ -109,7 +113,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/admin/{id}")
     public ResponseEntity<?> deleteUserByAdmin(@PathVariable("id") long id){
         Optional<User> user = userService.getUser(id);
@@ -130,10 +134,6 @@ public class UserController {
         }
         User user = optionalUser.get();
 
-        //check role
-        if (!"ROLE_MANAGER".equalsIgnoreCase(user.getRole())){
-            return ResponseEntity.badRequest().body("User not a manager");
-        }
         return ResponseEntity.ok(user);
     } 
 
