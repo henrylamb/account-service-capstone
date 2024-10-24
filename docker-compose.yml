@@ -2,12 +2,17 @@ services:
   user-service:
     build: .
     environment:
-      SPRING_APPLICATION_NAME: user-service
+      SPRING_APPLICATION_NAME: account-service
       SERVER_PORT: 8180
+      RSA_PRIVATE_KEY: classpath:keys/private.pem
+      RSA_PUBLIC_KEY: classpath:keys/public.pem
       SPRING_DATASOURCE_URL: jdbc:mysql://databaseuser:3306/your_database_name?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: your_username
       SPRING_DATASOURCE_PASSWORD: your_password
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_GENERATE_DDL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
     ports:
       - "8180:8180"
     depends_on:
