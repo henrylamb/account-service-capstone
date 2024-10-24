@@ -42,6 +42,10 @@ public class UserController {
         else if ("hiring-manager".equals(user.getRole())) {
             return ResponseEntity.ok(userService.getUser(id));
         }
+
+        else if ("admin".equals(user.getRole())) {
+            return ResponseEntity.ok(userService.getUser(id));
+        }
         return ResponseEntity.badRequest().build();
     }  
 
