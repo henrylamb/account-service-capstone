@@ -46,8 +46,8 @@ public class UserController {
     }  
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/admin/{id}")
-    public Iterable<User> getUserByIdByAdmin(@PathVariable("id") long id) {
+    @GetMapping("/admin")
+    public Iterable<User> getUsersByAdmin() {
           return userService.getAll();
     } 
     
