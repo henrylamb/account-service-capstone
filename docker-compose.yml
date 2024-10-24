@@ -3,13 +3,13 @@ services:
     build: .
     environment:
       SPRING_APPLICATION_NAME: user-service
-      SERVER_PORT: 7001
+      SERVER_PORT: 8180
       SPRING_DATASOURCE_URL: jdbc:mysql://databaseuser:3306/your_database_name?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: your_username
       SPRING_DATASOURCE_PASSWORD: your_password
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
     ports:
-      - "7001:7001"
+      - "8180:8180"
     depends_on:
       - databaseuser
     networks:
